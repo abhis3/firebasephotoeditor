@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { writeToDatabase } from './test';
 
 function App() {
   return (
@@ -9,6 +10,11 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+
+        <button onClick={() => writeToDatabase("sample")}>
+          Write to RTDB (Sample User)
+        </button>
+
         <a
           className="App-link"
           href="https://reactjs.org"
