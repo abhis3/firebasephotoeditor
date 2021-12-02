@@ -98,7 +98,7 @@ class ReplaceImg extends Component {
         </button> */}
 
         <button onClick={() => this.handleClick('images/tree.jpg')}>
-        REPLACE FUCKING IMAGE
+        REPLACE IMAGE
         </button>
 
 

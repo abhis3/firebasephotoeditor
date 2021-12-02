@@ -42,10 +42,7 @@ class ImgUpload extends Component {
           img = new Image();
           // Set image src
           img.src = reader.result;
-          console.log("++++++++++++++++++");
-          console.log(img);
           uploadFileFunction(file, fileName);
-          console.log("++++++++++++++++++");
           // On image load add to canvas
           img.onload = function () {
             canvas.width = img.width;

@@ -118,6 +118,8 @@ class App extends Component {
     this.updateImageNewUserUpload = this.updateImageNewUserUpload.bind(this);
     this.updateAllFiles = this.updateAllFiles.bind(this);
     this.addFileToAllFiles = this.addFileToAllFiles.bind(this);
+    this.updateFilters = this.updateFilters.bind(this);
+    this.rerenderShit = this.rerenderShit.bind(this);
   }
 
 //   componentWillMount() {
@@ -140,7 +142,6 @@ class App extends Component {
 //       });
 //       console.log(this.state);
 //       this.setState({allFiles: newAllFiles});
-//       console.log("POGGERS");
 //       // console.log(this.state.allFiles);
 //       console.log(this.state);
 //   });
@@ -192,6 +193,65 @@ class App extends Component {
     console.log("&&&&&&&&&&&&&&&&&");
   }
 
+  updateFilters(filterName, valueAddOrDecrement) {
+    console.log("^^^^^^^^^^^^^^^^^^^^");
+    console.log(this.state.allFilters);
+
+    var newBrightness = this.state.allFilters.brightness;
+    var newContrast = this.state.allFilters.contrast;
+    var newSaturation = this.state.allFilters.saturation;
+    var newVibrance = this.state.allFilters.vibrance;
+
+    if (filterName == "brightness") {
+      newBrightness = newBrightness + valueAddOrDecrement;
+    }
+
+    if (filterName == "contrast") {
+      newContrast = newContrast + valueAddOrDecrement;
+    }
+
+    if (filterName == "saturation") {
+      newSaturation = newSaturation + valueAddOrDecrement;
+    }
+
+    if (filterName == "vibrance") {
+      newVibrance = newVibrance + valueAddOrDecrement;
+    }
+    console.log(newBrightness);
+    this.setState({allFilters: {
+      brightness: newBrightness,
+      contrast: newContrast,
+      saturation: newSaturation,
+      vibrance: newVibrance
+    }}, this.rerenderShit);
+
+    console.log(this.state);
+    console.log("^^^^^^^^^^^^^^^^^^^^");
+  }
+
+  rerenderShit() {
+    let img = this.state.img;
+    var currentBrightness = this.state.allFilters.brightness;
+    var currentContrast = this.state.allFilters.contrast;
+    var currentSaturation = this.state.allFilters.saturation;
+    var currentVibrance = this.state.allFilters.vibrance;
+
+    console.log("$$$$$$$$$$");
+    console.log(currentBrightness);
+    console.log(currentContrast);
+    console.log(currentSaturation);
+    console.log(currentVibrance);
+    console.log("$$$$$$$$$$");
+
+    window.Caman("#canvas", img, function () {
+        this.brightness(currentBrightness);
+        this.contrast(currentContrast);
+        this.saturation(currentSaturation);
+        this.vibrance(currentVibrance);
+        this.render();
+      });
+  }
+
   render() {
     return (
       <div className="App">
@@ -199,7 +259,7 @@ class App extends Component {
         <div className = "flex flex-col md:flex-row justify-center">
         <ImgUpload updateImageNewUserUpload = {this.updateImageNewUserUpload} addFileToAllFiles={this.addFileToAllFiles} allFiles={this.state.allFiles}/>
         {/* <ReplaceImg updateImage = {this.updateImage}/> */}
-        <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName}/>
+        <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} allFilters={this.state.allFilters} updateFilters={this.updateFilters}/>
         <AllPhotos updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles}/>
 
 

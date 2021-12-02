@@ -20,14 +20,15 @@ class Filters extends Component {
     this.removeFilters = this.removeFilters.bind(this);
     this.downloadImg = this.downloadImg.bind(this);
     //this.updateCanvasImage = this.updateCanvasImage.bind(this);
-    this.state = {
-      brightness: 0,
-      contrast: 0,
-      saturation: 0,
-      vibrance: 0
-    };
-    this.onBrightnessChangeUp = this.onBrightnessChangeUp.bind(this);
-    this.onBrightnessChangeDown = this.onBrightnessChangeDown.bind(this);
+    // this.state = {
+    //   brightness: 0,
+    //   contrast: 0,
+    //   saturation: 0,
+    //   vibrance: 0
+    // };
+    // this.onBrightnessChangeUp = this.onBrightnessChangeUp.bind(this);
+    // this.onBrightnessChangeDown = this.onBrightnessChangeDown.bind(this);
+    this.onFilterButtonClick = this.onFilterButtonClick.bind(this);
     //this.rerenderShit = this.rerenderShit.bind(this);
   }
 
@@ -51,29 +52,43 @@ class Filters extends Component {
     console.log("Successfully uploaded photo edit history: " + photoName)
   }
 
-  rerenderShit() {
-    let img = this.props.img;
-    console.log("rerendershit " + this.state.brightness);
-    let newState = this.state.brightness;
-    window.Caman("#canvas", img, function () {
-        this.brightness(newState).render();
-      });
-  }
+  // rerenderShit() {
+  //   let img = this.props.img;
+  //   // console.log("rerendershit " + this.state.brightness);
+  //   // let newState = this.state.brightness;
+  //   console.log("+++++++++++++++++++");
+  //   console.log(this.props);
+  //   console.log("+++++++++++++++++++");
+  //   window.Caman("#canvas", img, function () {
+  //       this.brightness(this.props.allFilters.brightness).render();
+  //     });
+  // }
 
-  onBrightnessChangeUp(event) {
-      let newValue = this.state.brightness + 5;
+  onFilterButtonClick(filterName, delta) {
+      // let newValue = this.state.brightness + 5;
       // let fileName = this.props.fileName;
-      this.setState({brightness: newValue});
-      this.rerenderShit();
+      // this.setState({brightness: newValue});
+      this.props.updateFilters(filterName, delta);
+      // this.rerenderShit();
       //UNCOMMENT this.writeToDatabase();
-      console.log(this.state);
+      // console.log(this.state);
   };
 
-  onBrightnessChangeDown(event) {
-    let newValue = this.state.brightness - 5;
-    this.setState({brightness: newValue});
-    this.rerenderShit();
-};
+//   onBrightnessChangeUp(event) {
+//     // let newValue = this.state.brightness + 5;
+//     // let fileName = this.props.fileName;
+//     // this.setState({brightness: newValue});
+//     this.props.updateFilters("brightness", 5);
+//     // this.rerenderShit();
+//     //UNCOMMENT this.writeToDatabase();
+//     console.log(this.state);
+// };
+
+//   onBrightnessChangeDown(event) {
+//     let newValue = this.state.brightness - 5;
+//     this.setState({brightness: newValue});
+//     this.rerenderShit();
+// };
 
 
   addFilters() {
@@ -84,7 +99,6 @@ class Filters extends Component {
           this.setState({brightness: 5});
           // console.log("----------");
           // console.log(this.state);
-          // console.log(this.state.fuck);
           // console.log("----------");
           window.Caman("#canvas", img, function () {
             //this.brightness(0).render();
@@ -94,53 +108,53 @@ class Filters extends Component {
           window.Caman("#canvas", img, function () {
             this.brightness(-5).render();
           });
-        } else if (e.target.classList.contains("contrast-add")) {
+        } else if (e.target.classList.contains("contrast-add123")) {
           window.Caman("#canvas", img, function () {
             this.contrast(5).render();
           });
-        } else if (e.target.classList.contains("contrast-remove")) {
+        } else if (e.target.classList.contains("contrast-remove123")) {
           window.Caman("#canvas", img, function () {
             this.contrast(-5).render();
           });
-        } else if (e.target.classList.contains("saturation-add")) {
+        } else if (e.target.classList.contains("saturation-add123")) {
           window.Caman("#canvas", img, function () {
             this.saturation(5).render();
           });
-        } else if (e.target.classList.contains("saturation-remove")) {
+        } else if (e.target.classList.contains("saturation-remove123")) {
           window.Caman("#canvas", img, function () {
             this.saturation(-5).render();
           });
-        } else if (e.target.classList.contains("vibrance-add")) {
+        } else if (e.target.classList.contains("vibrance-add123")) {
           window.Caman("#canvas", img, function () {
             this.vibrance(5).render();
           });
-        } else if (e.target.classList.contains("vibrance-remove")) {
+        } else if (e.target.classList.contains("vibrance-remove123")) {
           window.Caman("#canvas", img, function () {
             this.vibrance(-5).render();
           });
-        } else if (e.target.classList.contains("vintage-add")) {
+        } else if (e.target.classList.contains("vintage-add123")) {
           window.Caman("#canvas", img, function () {
             this.vintage().render();
           });
-        } else if (e.target.classList.contains("nostalgia-add")) {
+        } else if (e.target.classList.contains("nostalgia-add123")) {
           window.Caman("#canvas", img, function () {
             this.reloadCanvasData();
             this.nostalgia().render();
           });
-        } else if (e.target.classList.contains("pinhole-add")) {
+        } else if (e.target.classList.contains("pinhole-add123")) {
           window.Caman("#canvas", img, function () {
             this.pinhole().render();
           });
-        } else if (e.target.classList.contains("sincity-add")) {
+        } else if (e.target.classList.contains("sincity-add123")) {
           window.Caman("#canvas", img, function () {
             this.sinCity().render();
           });
-        } else if (e.target.classList.contains("cross-add")) {
+        } else if (e.target.classList.contains("cross-add123")) {
           window.Caman("#canvas", img, function () {
             this.reloadCanvasData();
             this.crossProcess().render();
           });
-        } else if (e.target.classList.contains("pinhole-add")) {
+        } else if (e.target.classList.contains("pinhole-add123")) {
           window.Caman("#canvas", img, function () {
             this.pinhole().render();
           });
@@ -277,7 +291,7 @@ class Filters extends Component {
             <Button
               variant="contained"
               className="filter-btn brightness-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              onClick={this.onBrightnessChangeUp}
+              onClick={() => this.onFilterButtonClick("brightness", 5)}
             >
               +
             </Button>
@@ -291,7 +305,7 @@ class Filters extends Component {
             <button
               className="filter-btn brightness-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
               type="button"
-              onClick={this.onBrightnessChangeDown}
+              onClick={() => this.onFilterButtonClick("brightness", -5)}
             >
               -
             </button>
@@ -304,6 +318,7 @@ class Filters extends Component {
             <button
               className="filter-btn contrast-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
               type="button"
+              onClick={() => this.onFilterButtonClick("contrast", 5)}
             >
               +
             </button>
@@ -317,6 +332,7 @@ class Filters extends Component {
             <button
               className="filter-btn contrast-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
               type="button"
+              onClick={() => this.onFilterButtonClick("contrast", -5)}
             >
               -
             </button>
@@ -331,6 +347,7 @@ class Filters extends Component {
             <button
               className="filter-btn saturation-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
               type="button"
+              onClick={() => this.onFilterButtonClick("saturation", 5)}
             >
               +
             </button>
@@ -344,6 +361,7 @@ class Filters extends Component {
             <button
               className="filter-btn saturation-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
               type="button"
+              onClick={() => this.onFilterButtonClick("saturation", -5)}
             >
               -
             </button>
@@ -358,6 +376,7 @@ class Filters extends Component {
             <button
               className="filter-btn vibrance-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
               type="button"
+              onClick={() => this.onFilterButtonClick("vibrance", 5)}
             >
               +
             </button>
@@ -371,6 +390,7 @@ class Filters extends Component {
             <button
               className="filter-btn vibrance-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
               type="button"
+              onClick={() => this.onFilterButtonClick("vibrance", -5)}
             >
               -
             </button>
