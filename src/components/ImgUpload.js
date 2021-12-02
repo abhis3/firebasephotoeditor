@@ -5,7 +5,7 @@ class ImgUpload extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {img: {}, file: {}, fileName: ''};
+    // ??? this.state = {img: {}, file: {}, fileName: ''};
   }
 
   componentDidMount() {
@@ -57,9 +57,11 @@ class ImgUpload extends Component {
         false
       );
       //updating state
-    this.setState({img: img, file: file, fileName: fileName});
-    this.props.updateImage(this.state.img, this.state.file, this.state.fileName);
-    console.log(this.state.file);
+    // ??? this.setState({img: img, file: file, fileName: fileName});
+    // ??? this.props.updateImageNewUserUpload(this.state.img, this.state.file, this.state.fileName);
+    this.props.updateImageNewUserUpload(img, file, fileName);
+    this.props.addFileToAllFiles(fileName);
+    //console.log(this.state.file);
     });
     
   }

@@ -6,7 +6,12 @@ import ContrastIcon from '@mui/icons-material/Contrast';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import OpacityIcon from '@mui/icons-material/Opacity';
 
+//import { Caman } from "caman";
+
 import { uploadFileFunction, downloadFile, downloadFileGetURL } from '../test';
+import { app, database, storage, storageRef } from '../firebaseConfig';
+import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { set, ref as databaseRef } from "firebase/database";
 
 class Filters extends Component {
   constructor(props) {
@@ -15,17 +20,77 @@ class Filters extends Component {
     this.removeFilters = this.removeFilters.bind(this);
     this.downloadImg = this.downloadImg.bind(this);
     //this.updateCanvasImage = this.updateCanvasImage.bind(this);
+    this.state = {
+      brightness: 0,
+      contrast: 0,
+      saturation: 0,
+      vibrance: 0
+    };
+    this.onBrightnessChangeUp = this.onBrightnessChangeUp.bind(this);
+    this.onBrightnessChangeDown = this.onBrightnessChangeDown.bind(this);
+    //this.rerenderShit = this.rerenderShit.bind(this);
   }
+
+  writeToDatabase() {
+    let photoName = this.props.fileName;
+    photoName = photoName.replace(/\.[^/.]+$/, "")
+    let photoData = {
+        "history": [
+          {
+            "brightness": 0,
+            "contrast": 0,
+            "saturation": 0,
+            "vibrance": 0
+          }
+        ]
+    }
+
+    console.log("TESTING123");
+    console.log(photoName);
+    set(databaseRef(database, 'photos/' + photoName), photoData);
+    console.log("Successfully uploaded photo edit history: " + photoName)
+  }
+
+  rerenderShit() {
+    let img = this.props.img;
+    console.log("rerendershit " + this.state.brightness);
+    let newState = this.state.brightness;
+    window.Caman("#canvas", img, function () {
+        this.brightness(newState).render();
+      });
+  }
+
+  onBrightnessChangeUp(event) {
+      let newValue = this.state.brightness + 5;
+      // let fileName = this.props.fileName;
+      this.setState({brightness: newValue});
+      this.rerenderShit();
+      //UNCOMMENT this.writeToDatabase();
+      console.log(this.state);
+  };
+
+  onBrightnessChangeDown(event) {
+    let newValue = this.state.brightness - 5;
+    this.setState({brightness: newValue});
+    this.rerenderShit();
+};
+
 
   addFilters() {
     let img = this.props.img;
     document.addEventListener("click", (e) => {
       if (e.target.classList.contains("filter-btn")) {
-        if (e.target.classList.contains("brightness-add")) {
+        if (e.target.classList.contains("brightness-add123")) {
+          this.setState({brightness: 5});
+          // console.log("----------");
+          // console.log(this.state);
+          // console.log(this.state.fuck);
+          // console.log("----------");
           window.Caman("#canvas", img, function () {
-            this.brightness(5).render();
+            //this.brightness(0).render();
+            this.brightness(this.state.brightness).render();
           });
-        } else if (e.target.classList.contains("brightness-remove")) {
+        } else if (e.target.classList.contains("brightness-remove123")) {
           window.Caman("#canvas", img, function () {
             this.brightness(-5).render();
           });
@@ -201,6 +266,7 @@ class Filters extends Component {
     this.addFilters();
     this.removeFilters();
     this.downloadImg();
+    //this.rerenderShit();
     //this.updateCanvasImage();
     return (
       <div className="container mx-auto p-5">
@@ -211,6 +277,7 @@ class Filters extends Component {
             <Button
               variant="contained"
               className="filter-btn brightness-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
+              onClick={this.onBrightnessChangeUp}
             >
               +
             </Button>
@@ -224,6 +291,7 @@ class Filters extends Component {
             <button
               className="filter-btn brightness-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
               type="button"
+              onClick={this.onBrightnessChangeDown}
             >
               -
             </button>
@@ -371,6 +439,16 @@ class Filters extends Component {
             Reset Filters
           </button>
         </div>
+
+
+
+        {/* <div className="FilterSetting">
+          <input type="range" min="-100" max="100" step="1" value="0" data-filter="brightness">
+          <span class="FilterValue">0</span>
+        </div> */}
+
+
+
       </div>
     );
   }

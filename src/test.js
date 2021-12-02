@@ -1,5 +1,5 @@
 import { app, database, storage, storageRef } from './firebaseConfig';
-import { set } from "firebase/database";
+import { set, ref as databaseRef } from "firebase/database";
 import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 
 // Generate new board game and write initial state to RTDB
@@ -9,7 +9,18 @@ export function writeToDatabase(userId) {
         "photos": ["123.jpg", "456.jpg"],
         "email": "test@google.com"
     }
-    set(ref(database, 'photos/' + userId), userData);
+
+    let writeKey = 'photos/' + userId;
+    console.log('|||||||||||||||||||||||');
+    console.log(database);
+    console.log(writeKey);
+    console.log(userData);
+    console.log('|||||||||||||||||||||||');
+    set(databaseRef(database, writeKey), {
+      "username": userId,
+      "photos": ["123.jpg", "456.jpg"],
+      "email": "test@google.com"
+  });
     console.log("Successfully created user with id " + userId)
   }
 
