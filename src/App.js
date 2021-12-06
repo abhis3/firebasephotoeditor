@@ -97,6 +97,7 @@ import React, { Component } from "react";
 import { app, database, storage, storageRef } from './firebaseConfig';
 import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { uploadFileFunction, downloadFile, getAllFilesInBucket, writeToDatabase } from './test';
+import { set, ref as databaseRef } from "firebase/database";
 
 class App extends Component {
   constructor(props) {
@@ -120,6 +121,7 @@ class App extends Component {
     this.addFileToAllFiles = this.addFileToAllFiles.bind(this);
     this.updateFilters = this.updateFilters.bind(this);
     this.rerenderShit = this.rerenderShit.bind(this);
+    // this.writeToDatabase = this.writeToDatabase.bind(this);
   }
 
 //   componentWillMount() {
@@ -162,9 +164,10 @@ class App extends Component {
         saturation: 0,
         vibrance: 0 
       }
-    });
+    }, this.writeToDatabase);
     console.log("app", this.state.file);
     console.log("overall state on update image new upload", this.state);
+    // UNCOMMENT this.writeToDatabase();
   }
 
   updateImage(img, file, fileName) {
@@ -218,23 +221,46 @@ class App extends Component {
       newVibrance = newVibrance + valueAddOrDecrement;
     }
     console.log(newBrightness);
+
     this.setState({allFilters: {
       brightness: newBrightness,
       contrast: newContrast,
       saturation: newSaturation,
       vibrance: newVibrance
-    }}, this.rerenderShit);
+    }}, this.writeToDatabase);
+
+    this.rerenderShit(filterName, valueAddOrDecrement);
 
     console.log(this.state);
     console.log("^^^^^^^^^^^^^^^^^^^^");
   }
 
-  rerenderShit() {
+  rerenderShit(filterName, valueAddOrDecrement) {
+    console.log("current state rerenderShit");
+    console.log(this.state);
+
     let img = this.state.img;
-    var currentBrightness = this.state.allFilters.brightness;
-    var currentContrast = this.state.allFilters.contrast;
-    var currentSaturation = this.state.allFilters.saturation;
-    var currentVibrance = this.state.allFilters.vibrance;
+    // var currentBrightness = this.state.allFilters.brightness;
+    var currentBrightness = 0;
+    var currentContrast = 0;
+    var currentSaturation = 0;
+    var currentVibrance = 0;
+
+    if (filterName == "brightness") {
+      currentBrightness = currentBrightness + valueAddOrDecrement;
+    }
+
+    if (filterName == "contrast") {
+      currentContrast = currentContrast + valueAddOrDecrement;
+    }
+
+    if (filterName == "saturation") {
+      currentSaturation = currentSaturation + valueAddOrDecrement;
+    }
+
+    if (filterName == "vibrance") {
+      currentVibrance = currentVibrance + valueAddOrDecrement;
+    }
 
     console.log("$$$$$$$$$$");
     console.log(currentBrightness);
@@ -244,12 +270,43 @@ class App extends Component {
     console.log("$$$$$$$$$$");
 
     window.Caman("#canvas", img, function () {
+        // this.revert();
         this.brightness(currentBrightness);
         this.contrast(currentContrast);
         this.saturation(currentSaturation);
         this.vibrance(currentVibrance);
         this.render();
       });
+    
+  }
+
+  writeToDatabase = () => {
+    // let photoName = this.state.fileName;
+    // photoName = photoName.replace(/\.[^/.]+$/, "")
+    var photoName = this.state.fileNameNoExtension;
+    var newBrightness = this.state.allFilters.brightness;
+    var newContrast = this.state.allFilters.contrast;
+    var newSaturation = this.state.allFilters.saturation;
+    var newVibrance = this.state.allFilters.vibrance;
+
+    let photoData = {
+        "history": [
+          {
+            "brightness": newBrightness,
+            "contrast": newContrast,
+            "saturation": newSaturation,
+            "vibrance": newVibrance
+          }
+        ]
+    }
+
+    // console.log("**********************");
+    // console.log(this.state);
+    // console.log(photoName);
+    // console.log(photoData);
+    // console.log("**********************");
+    set(databaseRef(database, 'photos/' + photoName), photoData);
+    console.log("Successfully uploaded photo edit history: " + photoName)
   }
 
   render() {

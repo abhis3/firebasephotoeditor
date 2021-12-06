@@ -32,25 +32,25 @@ class Filters extends Component {
     //this.rerenderShit = this.rerenderShit.bind(this);
   }
 
-  writeToDatabase() {
-    let photoName = this.props.fileName;
-    photoName = photoName.replace(/\.[^/.]+$/, "")
-    let photoData = {
-        "history": [
-          {
-            "brightness": 0,
-            "contrast": 0,
-            "saturation": 0,
-            "vibrance": 0
-          }
-        ]
-    }
+  // writeToDatabase() {
+  //   let photoName = this.props.fileName;
+  //   photoName = photoName.replace(/\.[^/.]+$/, "")
+  //   let photoData = {
+  //       "history": [
+  //         {
+  //           "brightness": 0,
+  //           "contrast": 0,
+  //           "saturation": 0,
+  //           "vibrance": 0
+  //         }
+  //       ]
+  //   }
 
-    console.log("TESTING123");
-    console.log(photoName);
-    set(databaseRef(database, 'photos/' + photoName), photoData);
-    console.log("Successfully uploaded photo edit history: " + photoName)
-  }
+  //   console.log("TESTING123");
+  //   console.log(photoName);
+  //   set(databaseRef(database, 'photos/' + photoName), photoData);
+  //   console.log("Successfully uploaded photo edit history: " + photoName)
+  // }
 
   // rerenderShit() {
   //   let img = this.props.img;
@@ -73,23 +73,6 @@ class Filters extends Component {
       //UNCOMMENT this.writeToDatabase();
       // console.log(this.state);
   };
-
-//   onBrightnessChangeUp(event) {
-//     // let newValue = this.state.brightness + 5;
-//     // let fileName = this.props.fileName;
-//     // this.setState({brightness: newValue});
-//     this.props.updateFilters("brightness", 5);
-//     // this.rerenderShit();
-//     //UNCOMMENT this.writeToDatabase();
-//     console.log(this.state);
-// };
-
-//   onBrightnessChangeDown(event) {
-//     let newValue = this.state.brightness - 5;
-//     this.setState({brightness: newValue});
-//     this.rerenderShit();
-// };
-
 
   addFilters() {
     let img = this.props.img;
