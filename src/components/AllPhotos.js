@@ -36,9 +36,10 @@ class AllPhotos extends Component {
         });
     }
 
-    handleClickReplaceImage(photoLink) {
+    handleClickReplaceImage(photoLink, fileName) {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
+        var img = null;
     
         // ctx.fillStyle="red";
         // ctx.fillRect(20,20,20,20);
@@ -49,17 +50,32 @@ class AllPhotos extends Component {
             // console.log("#####");
             // console.log(url);
     
-            let img = new Image();
+            img = new Image();
             img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
+                canvas.removeAttribute("data-caman-id");
             }
             img.src = url;
             img.crossOrigin = "Anonymous";
+
+            console.log("~~~~~~~");
+            console.log(photoLink);
+
+            // this.props.updateImageOldUpload(img, fileName);
+            setTimeout(function(){
+                this.props.updateImageOldUpload(img, fileName);
+            }.bind(this), 500);
         })
         .catch((error) => {
             console.log("ERROR DONWLOADING");
             console.log(error);
         });
+
+        // this.props.rerenderShitForLoadFromStorageTwo();
+
+
     }
 
 
@@ -70,7 +86,7 @@ class AllPhotos extends Component {
             const desc = `Open ${entry.name}`;
             return (
                 <li key={index}>
-                    <button onClick={() => this.handleClickReplaceImage(entry.fullPath)}> 
+                    <button onClick={() => this.handleClickReplaceImage(entry.fullPath, entry.name)}> 
                         {desc}
                     </button>
                 </li>
