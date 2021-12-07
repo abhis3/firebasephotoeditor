@@ -1,87 +1,3 @@
-// import logo from './logo.svg';
-// import './App.css';
-// import { writeToDatabase } from './test';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-
-//         <button onClick={() => writeToDatabase("sample")}>
-//           Write to RTDB (Sample User)
-//         </button>
-
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-
-/////////
-
-
-// import Upload from "./components/Upload";
-// import React, { Component } from "react";
-
-// class App extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {img: {}, file: {}, fileName: ''};
-//     this.updateImage = this.updateImage.bind(this);
-//   }
-
-//   render() {
-//     return (
-//       <div className="App">
-//         {/* <Nav />
-//         <div className = "flex flex-col md:flex-row justify-center"> */}
-//         <Upload updateImage = {this.updateImage}/>
-//         <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName}/>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
-
-/////////
-// import React from "react";
-// import ReactDOM from "react-dom";
-// import Button from "@mui/material/Button";
-
-// function App() {
-//   return (
-//     <Button variant="contained" color="primary">
-//       Hello World
-//     </Button>
-//   );
-// }
-
-// export default App;
-//ReactDOM.render(<App />, document.querySelector("#app"));
-
-
-
-
-
-
-
-
 import Nav from "./components/Nav";
 import ImgUpload from "./components/ImgUpload";
 import ReplaceImg from "./components/ReplaceImg";
@@ -111,7 +27,8 @@ class App extends Component {
         brightness: 0,
         contrast: 0,
         saturation: 0,
-        vibrance: 0 
+        vibrance: 0,
+        exposure: 0
       },
       allFiles: []
     };
@@ -132,25 +49,6 @@ class App extends Component {
 //     console.log(this.state);
 // }
 
-// getAllFilesInBucket() {
-//   const listReference = ref(storage, "images");
-  
-//   listAll(listReference).then((res) => {
-//       //console.log("@@@@@");
-//       var newAllFiles = this.state.allFiles;
-//       res.items.forEach((itemRef) => {
-//           const mapping = {name: itemRef.name, fullPath: itemRef.fullPath}
-//           newAllFiles.push(mapping)
-//           //console.log(itemRef.name);
-//           //console.log(itemRef.fullPath);
-//       });
-//       console.log(this.state);
-//       this.setState({allFiles: newAllFiles});
-//       // console.log(this.state.allFiles);
-//       console.log(this.state);
-//   });
-// }
-
   updateImageNewUserUpload(img, file, fileName) {
     let fileNameNoExtension = fileName;
     fileNameNoExtension = fileNameNoExtension.replace(/\.[^/.]+$/, "");
@@ -164,10 +62,10 @@ class App extends Component {
         brightness: 0,
         contrast: 0,
         saturation: 0,
-        vibrance: 0 
+        vibrance: 0,
+        exposure: 0
       }
     }, this.writeToDatabase);
-    console.log("app", this.state.file);
     console.log("overall state on update image new upload", this.state);
   }
 
@@ -184,16 +82,15 @@ class App extends Component {
         brightness: 0,
         contrast: 0,
         saturation: 0,
-        vibrance: 0 
+        vibrance: 0,
+        exposure: 0
       }
     }, this.readFromDatabase);
-    console.log("app", this.state.file);
     console.log("overall state on update old image click", this.state);
   }
 
   updateImage(img, file, fileName) {
     this.setState({img: img, file: file, fileName: fileName});
-    console.log("app", this.state.file);
     console.log("overall state on update image", this.state);
   }
 
@@ -212,19 +109,15 @@ class App extends Component {
     newAllFiles.push({name: fileToAdd, fullPath: newPath});
 
     this.setState({allFiles: newAllFiles});
-
-    console.log(this.state);
-    console.log("&&&&&&&&&&&&&&&&&");
   }
 
   updateFilters(filterName, valueAddOrDecrement) {
-    console.log("^^^^^^^^^^^^^^^^^^^^");
-    console.log(this.state.allFilters);
-
     var newBrightness = this.state.allFilters.brightness;
     var newContrast = this.state.allFilters.contrast;
     var newSaturation = this.state.allFilters.saturation;
     var newVibrance = this.state.allFilters.vibrance;
+    var newExposure = this.state.allFilters.exposure;
+
 
     if (filterName == "brightness") {
       newBrightness = newBrightness + valueAddOrDecrement;
@@ -241,24 +134,23 @@ class App extends Component {
     if (filterName == "vibrance") {
       newVibrance = newVibrance + valueAddOrDecrement;
     }
-    console.log(newBrightness);
+
+    if (filterName == "exposure") {
+      newExposure = newExposure + valueAddOrDecrement;
+    }
 
     this.setState({allFilters: {
       brightness: newBrightness,
       contrast: newContrast,
       saturation: newSaturation,
-      vibrance: newVibrance
+      vibrance: newVibrance,
+      exposure: newExposure
     }}, this.writeToDatabase);
 
     this.rerenderShit(filterName, valueAddOrDecrement);
-
-    console.log(this.state);
-    console.log("^^^^^^^^^^^^^^^^^^^^");
   }
 
   rerenderShit(filterName, valueAddOrDecrement) {
-    console.log("current state rerenderShit");
-    console.log(this.state);
 
     let img = this.state.img;
     // var currentBrightness = this.state.allFilters.brightness;
@@ -266,6 +158,7 @@ class App extends Component {
     var currentContrast = 0;
     var currentSaturation = 0;
     var currentVibrance = 0;
+    var currentExposure = 0;
 
     if (filterName == "brightness") {
       currentBrightness = currentBrightness + valueAddOrDecrement;
@@ -283,12 +176,9 @@ class App extends Component {
       currentVibrance = currentVibrance + valueAddOrDecrement;
     }
 
-    console.log("$$$$$$$$$$");
-    console.log(currentBrightness);
-    console.log(currentContrast);
-    console.log(currentSaturation);
-    console.log(currentVibrance);
-    console.log("$$$$$$$$$$");
+    if (filterName == "exposure") {
+      currentExposure = currentExposure + valueAddOrDecrement;
+    }
 
     window.Caman("#canvas", img, function () {
         // this.revert();
@@ -296,6 +186,7 @@ class App extends Component {
         this.contrast(currentContrast);
         this.saturation(currentSaturation);
         this.vibrance(currentVibrance);
+        this.exposure(currentExposure);
         this.render();
       });
     
@@ -309,6 +200,7 @@ class App extends Component {
     var newContrast = this.state.allFilters.contrast;
     var newSaturation = this.state.allFilters.saturation;
     var newVibrance = this.state.allFilters.vibrance;
+    var newExposure = this.state.allFilters.exposure;
 
     let photoData = {
         "history": [
@@ -316,23 +208,17 @@ class App extends Component {
             "brightness": newBrightness,
             "contrast": newContrast,
             "saturation": newSaturation,
-            "vibrance": newVibrance
+            "vibrance": newVibrance,
+            "exposure": newExposure
           }
         ]
     }
 
-    // console.log("**********************");
-    // console.log(this.state);
-    // console.log(photoName);
-    // console.log(photoData);
-    // console.log("**********************");
     set(databaseRef(database, 'photos/' + photoName), photoData);
     console.log("Successfully uploaded photo edit history: " + photoName)
   }
 
   readFromDatabase = () => {
-    // let photoName = this.state.fileName;
-    // photoName = photoName.replace(/\.[^/.]+$/, "")
     var photoName = this.state.fileNameNoExtension;
     const dbRef = databaseRef(database);
 
@@ -349,46 +235,15 @@ class App extends Component {
           allFilters: latestFilter
         }, this.rerenderShitForLoadFromStorage);
 
-
-        // // Try and rerender
-        // console.log("current state rerenderShitForLoadFromStorage");
-        // console.log(this.state);
-
-        // let img = this.state.img;
-
-        // var newBrightness = latestFilter.brightness;
-        // var newContrast = latestFilter.contrast;
-        // var newSaturation = latestFilter.saturation;
-        // var newVibrance = latestFilter.vibrance;
-
-        // window.Caman("#canvas", img, function () {
-        //   // this.revert();
-        //   this.brightness(0);
-        //   this.contrast(0);
-        //   this.saturation(0);
-        //   this.vibrance(0);
-        //   this.render();
-        // });
-
-
       } else {
         console.log("No data available");
       }
     })
 
-    // this.setState({allFilters: {
-    //   brightness: newBrightness,
-    //   contrast: newContrast,
-    //   saturation: newSaturation,
-    //   vibrance: newVibrance
-    // }}, this.writeToDatabase);
-
     console.log("Successfully read photo edit history for photo: " + photoName)
   }
 
   rerenderShitForLoadFromStorage = () => {
-    console.log("current state rerenderShitForLoadFromStorage");
-    console.log(this.state);
 
     let img = this.state.img;
 
@@ -396,14 +251,7 @@ class App extends Component {
     var newContrast = this.state.allFilters.contrast;
     var newSaturation = this.state.allFilters.saturation;
     var newVibrance = this.state.allFilters.vibrance;
-
-    console.log("&&&&&&&&&");
-    console.log(img);
-    console.log(newBrightness);
-    console.log(newContrast);
-    console.log(newSaturation);
-    console.log(newVibrance);
-    console.log("&&&&&&&&&");
+    var newExposure = this.state.allFilters.exposure;
 
     window.Caman("#canvas", img, function () {
         // this.revert();
@@ -411,13 +259,12 @@ class App extends Component {
         this.contrast(newContrast);
         this.saturation(newSaturation);
         this.vibrance(newVibrance);
+        this.exposure(newExposure);
         this.render();
       });
   }
 
   rerenderShitForLoadFromStorageTwo() {
-    console.log("current state rerenderShitForLoadFromStorageTwo");
-    console.log(this.state);
 
     let img = this.state.img;
 
@@ -426,13 +273,13 @@ class App extends Component {
     var newSaturation = this.state.allFilters.saturation;
     var newVibrance = this.state.allFilters.vibrance;
 
-    console.log("@@@@@@@@@@@@@@@");
-    console.log(img);
-    console.log(newBrightness);
-    console.log(newContrast);
-    console.log(newSaturation);
-    console.log(newVibrance);
-    console.log("@@@@@@@@@@@@@@@");
+    // console.log("@@@@@@@@@@@@@@@");
+    // console.log(img);
+    // console.log(newBrightness);
+    // console.log(newContrast);
+    // console.log(newSaturation);
+    // console.log(newVibrance);
+    // console.log("@@@@@@@@@@@@@@@");
 
     window.Caman("#canvas", img, function () {
         // this.revert();

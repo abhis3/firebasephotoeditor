@@ -33,16 +33,12 @@ class AllPhotos extends Component {
         const listReference = ref(storage, "images");
         
         listAll(listReference).then((res) => {
-            //console.log("@@@@@");
             // ??? var newAllFiles = this.state.allFiles;
             var newAllFiles = [];
             res.items.forEach((itemRef) => {
                 const mapping = {name: itemRef.name, fullPath: itemRef.fullPath}
                 newAllFiles.push(mapping)
-                //console.log(itemRef.name);
-                //console.log(itemRef.fullPath);
             });
-            // console.log(this.state);
             // ??? this.setState({allFiles: newAllFiles});
             this.props.updateAllFiles(newAllFiles);
         });
@@ -71,9 +67,6 @@ class AllPhotos extends Component {
             }
             img.src = url;
             img.crossOrigin = "Anonymous";
-
-            console.log("~~~~~~~");
-            console.log(photoLink);
 
             // this.props.updateImageOldUpload(img, fileName);
             setTimeout(function(){

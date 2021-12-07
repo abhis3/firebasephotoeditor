@@ -7,6 +7,12 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import OpacityIcon from '@mui/icons-material/Opacity';
 import { ButtonGroup, Tooltip } from '@mui/material';
 
+import ExposureIcon from '@mui/icons-material/Exposure';
+import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import GrainIcon from '@mui/icons-material/Grain';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import MonochromePhotosIcon from '@mui/icons-material/MonochromePhotos';
+
 //import { Caman } from "caman";
 
 import { uploadFileFunction, downloadFile, downloadFileGetURL } from '../test';
@@ -152,10 +158,9 @@ class Filters extends Component {
     const removeBtn = document.getElementById("remove");
     let img = this.props.img;
     const file = this.props.file;
-    console.log("filters", file);
+
     if (removeBtn) {
       removeBtn.addEventListener("click", (e) => {
-        console.log("APPLE");
 
         window.Caman("#canvas", img, function () {
           // this.revert();
@@ -374,6 +379,33 @@ class Filters extends Component {
               </Button>
           </ButtonGroup>
           </div>
+
+        {/* EXPOSURE */}
+        <div className="flex mb-4" role="group">
+          <Tooltip title="Exposure">
+            <ExposureIcon sx={{ fontSize: 40 }} />
+          </Tooltip>
+
+          <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            
+            <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("exposure", 5)}
+              >
+                +
+              </Button>
+
+
+              <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("exposure", -5)}
+              >
+                -
+              </Button>
+          </ButtonGroup>
+          </div>
+
+
 
         </div>
 
