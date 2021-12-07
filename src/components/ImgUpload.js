@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import { uploadFileFunction, downloadFile, downloadFileGetURL } from '../test';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Stack from '@mui/material/Stack';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 class ImgUpload extends Component {
 
@@ -11,7 +17,7 @@ class ImgUpload extends Component {
   componentDidMount() {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    const uploadFile = document.getElementById("upload-file");
+    const uploadFile = document.getElementById("contained-button-file");
     let img = new Image();
     let fileName = "";
 
@@ -22,7 +28,7 @@ class ImgUpload extends Component {
     // Upload File
     uploadFile.addEventListener("change", () => {
       // Get File
-      const file = document.getElementById("upload-file").files[0];
+      const file = document.getElementById("contained-button-file").files[0];
       // Init FileReader API
       const reader = new FileReader();
 
@@ -64,18 +70,35 @@ class ImgUpload extends Component {
   }
 
   render() {
+    const Input = styled('input')({
+      display: 'none',
+    });
+
     return (
-      <div className="container mx-auto p-5">
+      <Button
+        variant="contained"
+        component="label"
+        startIcon={<CloudUploadIcon />}
+      >
+
+        Upload File
         <input
           type="file"
-          className="text-white w-3/4 px-4 py-2 bg-gray-800  capitalize text outline-none focus:outline-none"
-          id="upload-file"
-        ></input>
-        {/* <canvas
-          className="mx-auto p-5 bg-gray-100 w-full md:w-3/4 my-4"
-          id="canvas"
-        ></canvas> */}
-      </div>
+          id="contained-button-file"
+          hidden
+        />
+      </Button>
+
+
+
+      // <div className="container mx-auto p-5">
+      //   <input
+      //     type="file"
+      //     className="text-white w-3/4 px-4 py-2 bg-gray-800  capitalize text outline-none focus:outline-none"
+      //     id="contained-button-file"
+      //   >
+      //   </input>
+      // </div>
     );
   }
 }

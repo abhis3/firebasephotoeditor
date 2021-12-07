@@ -5,6 +5,18 @@ import { uploadFileFunction, downloadFile, downloadFileGetURL } from '../test';
 import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { app, database, storage, storageRef } from '../firebaseConfig';
 
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import InboxIcon from '@mui/icons-material/Inbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import FolderIcon from '@mui/icons-material/Folder';
+import ImageIcon from '@mui/icons-material/Image';
+import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined';
+
 
 class AllPhotos extends Component {
 
@@ -78,6 +90,51 @@ class AllPhotos extends Component {
 
     }
 
+    SelectedListItem() {
+        // const [selectedIndex, setSelectedIndex] = React.useState(1);
+      
+        const handleListItemClick = (event) => {
+        //   setSelectedIndex(index);
+          console.log("PUSHED BUTTON");
+        };
+      
+        return (
+          <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <List component="nav" aria-label="main mailbox folders">
+              
+              <ListItemButton
+                onClick={(event) => handleListItemClick(event)}
+              >
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItemButton>
+
+
+            </List>
+
+
+
+            <Divider />
+            {/* <List component="nav" aria-label="secondary mailbox folder">
+              <ListItemButton
+                selected={selectedIndex === 2}
+                onClick={(event) => handleListItemClick(event, 2)}
+              >
+                <ListItemText primary="Trash" />
+              </ListItemButton>
+              <ListItemButton
+                selected={selectedIndex === 3}
+                onClick={(event) => handleListItemClick(event, 3)}
+              >
+                <ListItemText primary="Spam" />
+              </ListItemButton>
+            </List> */}
+          </Box>
+        );
+      }
+
 
     render() {
         const allCurrentFiles = this.props.allFiles;
@@ -93,13 +150,51 @@ class AllPhotos extends Component {
             );
         });
 
+        const movesNewButton = allCurrentFiles.map((entry, index) => {
+            const desc = `${entry.name}`;
+            return (
+                <ListItemButton 
+                    onClick={() => this.handleClickReplaceImage(entry.fullPath, entry.name)}
+                >
+                    <ListItemIcon>
+                        <ImageIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={desc} />
+                </ListItemButton>
+            );
+        });
+
+        const handleListItemClick = (event) => {
+            //   setSelectedIndex(index);
+              console.log("PUSHED BUTTON");
+            };
 
         return (
-            // <button onClick={() => console.log(this.state)}>
-            //     TESTING123
-            // </button>
-            <ol>{moves}</ol>
-        );
+            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              <List component="nav" aria-label="main mailbox folders">
+                
+                <ListItemButton
+                  onClick={(event) => handleListItemClick(event)}
+                  disabled={true}
+                >
+                  <ListItemIcon>
+                    <FolderIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Open File" />
+                </ListItemButton>
+
+              </List>
+  
+  
+              <Divider />
+
+            <List component="nav" aria-label="secondary mailbox folder">
+                {movesNewButton}
+              </List>
+
+            </Box>
+          );
+
     }
 
 

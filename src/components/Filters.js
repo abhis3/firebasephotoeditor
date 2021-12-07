@@ -5,6 +5,7 @@ import Brightness6Icon from '@mui/icons-material/Brightness6';
 import ContrastIcon from '@mui/icons-material/Contrast';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import OpacityIcon from '@mui/icons-material/Opacity';
+import { ButtonGroup, Tooltip } from '@mui/material';
 
 //import { Caman } from "caman";
 
@@ -269,117 +270,110 @@ class Filters extends Component {
       <div className="container mx-auto p-5">
         <div className="flex flex-col items-center justify-evenly">
 
+        {/* BRIGHTNESS */}
+        <div className="flex mb-4" role="group">
+          <Tooltip title="Brightness">
+            <Brightness6Icon sx={{ fontSize: 40 }} />
+          </Tooltip>
 
-          <div className="flex mb-4" role="group">
+          <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            
             <Button
-              variant="contained"
-              className="filter-btn brightness-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              onClick={() => this.onFilterButtonClick("brightness", 5)}
-            >
-              +
-            </Button>
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("brightness", 5)}
+              >
+                +
+              </Button>
 
-          <Brightness6Icon fontSize="large" />
 
-            <span className="inline-block w-40 py-1 bg-gray-100 uppercase text-gray-800 capitalize">
-              Brightness
-            </span>
-
-            <button
-              className="filter-btn brightness-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              type="button"
-              onClick={() => this.onFilterButtonClick("brightness", -5)}
-            >
-              -
-            </button>
+              <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("brightness", -5)}
+              >
+                -
+              </Button>
+          </ButtonGroup>
           </div>
 
 
 
+          {/* CONTRAST */}
           <div className="flex mb-4" role="group">
+          <Tooltip title="Contrast">
+            <ContrastIcon sx={{ fontSize: 40 }} />
+          </Tooltip>
 
-            <button
-              className="filter-btn contrast-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              type="button"
-              onClick={() => this.onFilterButtonClick("contrast", 5)}
-            >
-              +
-            </button>
+          <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            
+            <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("contrast", 5)}
+              >
+                +
+              </Button>
 
-            <ContrastIcon fontSize="large" />
 
-            <span className="inline-block w-40 py-1 bg-gray-100 uppercase text-gray-800 capitalize">
-              Contrast
-            </span>
-
-            <button
-              className="filter-btn contrast-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              type="button"
-              onClick={() => this.onFilterButtonClick("contrast", -5)}
-            >
-              -
-            </button>
+              <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("contrast", -5)}
+              >
+                -
+              </Button>
+          </ButtonGroup>
           </div>
 
 
 
-
-
+          {/* SATURATION */}
           <div className="flex mb-4" role="group">
+          <Tooltip title="Saturation">
+            <ColorLensIcon sx={{ fontSize: 40 }} />
+          </Tooltip>
 
-            <button
-              className="filter-btn saturation-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              type="button"
-              onClick={() => this.onFilterButtonClick("saturation", 5)}
-            >
-              +
-            </button>
+          <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            
+            <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("saturation", 5)}
+              >
+                +
+              </Button>
 
-            <ColorLensIcon fontSize="large" />
 
-            <span className="inline-block w-40 py-1 bg-gray-100 uppercase text-gray-800 capitalize">
-              Saturation
-            </span>
-
-            <button
-              className="filter-btn saturation-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              type="button"
-              onClick={() => this.onFilterButtonClick("saturation", -5)}
-            >
-              -
-            </button>
-
+              <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("saturation", -5)}
+              >
+                -
+              </Button>
+          </ButtonGroup>
           </div>
 
 
-
-
+          {/* VIBRANCE */}
           <div className="flex mb-4" role="group">
+          <Tooltip title="Vibrance">
+            <OpacityIcon sx={{ fontSize: 40 }} />
+          </Tooltip>
 
-            <button
-              className="filter-btn vibrance-add text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              type="button"
-              onClick={() => this.onFilterButtonClick("vibrance", 5)}
-            >
-              +
-            </button>
+          <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            
+            <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("vibrance", 5)}
+              >
+                +
+              </Button>
 
-            <OpacityIcon fontSize="large" />
 
-            <span className="inline-block w-40 py-1 bg-gray-100 uppercase text-gray-800 capitalize">
-              Vibrance
-            </span>
-
-            <button
-              className="filter-btn vibrance-remove text-white px-4 py-1 bg-gray-800  capitalize text outline-none focus:outline-none"
-              type="button"
-              onClick={() => this.onFilterButtonClick("vibrance", -5)}
-            >
-              -
-            </button>
-
+              <Button
+                variant="contained"
+                onClick={() => this.onFilterButtonClick("vibrance", -5)}
+              >
+                -
+              </Button>
+          </ButtonGroup>
           </div>
-
 
         </div>
 
@@ -390,7 +384,7 @@ class Filters extends Component {
 
 
 
-        <div className="flex flex-col p-8 justify-evenly">
+        {/* <div className="flex flex-col p-8 justify-evenly">
           <button
             className="filter-btn vintage-add text-white px-4 py-1 mb-4 bg-gray-800  capitalize text outline-none focus:outline-none"
             type="button"
@@ -415,8 +409,12 @@ class Filters extends Component {
           >
             Pin Hole
           </button>
-        </div>
-        <div className="flex mx-auto w-3/4 justify-evenly">
+        </div> */}
+
+
+
+
+        {/* <div className="flex mx-auto w-3/4 justify-evenly">
           <button
             className="filter-btn text-white px-4 py-1 bg-green-500  capitalize text outline-none focus:outline-none"
             type="button"
@@ -425,15 +423,6 @@ class Filters extends Component {
             Download
           </button>
 
-          {/* <button
-            className="filter-btn text-white px-4 py-1 bg-green-500  capitalize text outline-none focus:outline-none"
-            type="button"
-            id="replace"
-          >
-            Replace Image
-          </button> */}
-
-
           <button
             className="filter-btn text-white px-4 py-1 bg-red-500  capitalize text outline-none focus:outline-none"
             type="button"
@@ -441,7 +430,7 @@ class Filters extends Component {
           >
             Reset Filters
           </button>
-        </div>
+        </div> */}
 
 
 
