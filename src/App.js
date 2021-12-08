@@ -426,34 +426,36 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        {/* <Nav /> */}
-        <div className = "flex flex-col md:flex-row justify-center">
-        <ImgUpload updateImageNewUserUpload = {this.updateImageNewUserUpload} addFileToAllFiles={this.addFileToAllFiles} allFiles={this.state.allFiles} addNewPhotoHistoryOnUserUpload={this.addNewPhotoHistoryOnUserUpload} fileName={this.state.fileName}/>
-        {/* <ReplaceImg updateImage = {this.updateImage}/> */}
-        <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} updateFilters={this.updateFilters}/>
-        <AllPhotos updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} rerenderShitForLoadFromStorageTwo={this.rerenderShitForLoadFromStorageTwo}/>
-        <History updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} history={this.state.history} updateFiltersHistoryClick={this.updateFiltersHistoryClick}/>
-        </div>
-      </div>
+      // <div className="App">
+      //   {/* <Nav /> */}
+      //   <div className = "flex flex-col md:flex-row justify-center">
+      //   <ImgUpload updateImageNewUserUpload = {this.updateImageNewUserUpload} addFileToAllFiles={this.addFileToAllFiles} allFiles={this.state.allFiles} addNewPhotoHistoryOnUserUpload={this.addNewPhotoHistoryOnUserUpload} fileName={this.state.fileName}/>
+      //   {/* <ReplaceImg updateImage = {this.updateImage}/> */}
+      //   <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} updateFilters={this.updateFilters}/>
+      //   <AllPhotos updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} rerenderShitForLoadFromStorageTwo={this.rerenderShitForLoadFromStorageTwo}/>
+      //   <History updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} history={this.state.history} updateFiltersHistoryClick={this.updateFiltersHistoryClick}/>
+      //   </div>
+      // </div>
 
       // <div className="container">
       //   <div class="one"></div>
       //   <div class="two"></div>
       // </div>
 
-      // <div className="container">
-      //   {/* <Nav /> */}
-      //   <div class = "one">
-      //     <ImgUpload updateImageNewUserUpload = {this.updateImageNewUserUpload} addFileToAllFiles={this.addFileToAllFiles} allFiles={this.state.allFiles} addNewPhotoHistoryOnUserUpload={this.addNewPhotoHistoryOnUserUpload} fileName={this.state.fileName}/>
-      //     </div>
-      //     <div class = "one">
-      //     <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} updateFilters={this.updateFilters}/>
-      //     </div>
-      //     <AllPhotos updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} rerenderShitForLoadFromStorageTwo={this.rerenderShitForLoadFromStorageTwo}/>
-      //     <History updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} history={this.state.history} updateFiltersHistoryClick={this.updateFiltersHistoryClick}/>
-      //   </div>
-      // </div>
+      <div className="container">
+        <div class="one">
+          <ImgUpload updateImageNewUserUpload = {this.updateImageNewUserUpload} addFileToAllFiles={this.addFileToAllFiles} allFiles={this.state.allFiles} addNewPhotoHistoryOnUserUpload={this.addNewPhotoHistoryOnUserUpload} fileName={this.state.fileName}/>
+          <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} updateFilters={this.updateFilters}/>
+          <AllPhotos updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} rerenderShitForLoadFromStorageTwo={this.rerenderShitForLoadFromStorageTwo}/>
+          <History updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} history={this.state.history} updateFiltersHistoryClick={this.updateFiltersHistoryClick}/>
+        </div>
+
+        <div class="two">
+          <canvas id="canvas"></canvas>
+        </div>
+        {/* <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} updateFilters={this.updateFilters}/>
+        <History updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} history={this.state.history} updateFiltersHistoryClick={this.updateFiltersHistoryClick}/> */}
+      </div>
     );
   }
 }

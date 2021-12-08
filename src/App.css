@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  width: 98%;
+  height: 790px;
+  background: white;
+  margin: auto;
+  padding: 10px;
+}
+
+.one {
+  width: 26%;
+  height: 790px;
+  background: white;
+  float: left;
+}
+
+.two {
+  margin-left: 26%;
+  height:790px;
+  background-color:white;
+}

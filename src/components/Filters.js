@@ -272,11 +272,10 @@ class Filters extends Component {
     //this.rerenderShit();
     //this.updateCanvasImage();
     return (
-      <div className="container mx-auto p-5">
-        <div className="flex flex-col items-center justify-evenly">
+      <div>
 
         {/* BRIGHTNESS */}
-        <div className="flex mb-4" role="group">
+        <div>
           <Tooltip title="Brightness">
             <Brightness6Icon sx={{ fontSize: 40 }} />
           </Tooltip>
@@ -303,7 +302,7 @@ class Filters extends Component {
 
 
           {/* CONTRAST */}
-          <div className="flex mb-4" role="group">
+          <div>
           <Tooltip title="Contrast">
             <ContrastIcon sx={{ fontSize: 40 }} />
           </Tooltip>
@@ -330,7 +329,7 @@ class Filters extends Component {
 
 
           {/* SATURATION */}
-          <div className="flex mb-4" role="group">
+          <div>
           <Tooltip title="Saturation">
             <ColorLensIcon sx={{ fontSize: 40 }} />
           </Tooltip>
@@ -356,7 +355,7 @@ class Filters extends Component {
 
 
           {/* VIBRANCE */}
-          <div className="flex mb-4" role="group">
+          <div>
           <Tooltip title="Vibrance">
             <OpacityIcon sx={{ fontSize: 40 }} />
           </Tooltip>
@@ -381,7 +380,7 @@ class Filters extends Component {
           </div>
 
         {/* EXPOSURE */}
-        <div className="flex mb-4" role="group">
+        <div>
           <Tooltip title="Exposure">
             <ExposureIcon sx={{ fontSize: 40 }} />
           </Tooltip>
@@ -406,12 +405,17 @@ class Filters extends Component {
           </div>
 
 
+      </div>
+    );
+  }
+}
 
-        </div>
+export default Filters;
 
 
 
-        
+
+
 
         {/* <div className="flex mx-auto w-3/4 justify-evenly">
           <button
@@ -484,11 +488,3 @@ class Filters extends Component {
           <span class="FilterValue">0</span>
         </div> */}
 
-
-
-      </div>
-    );
-  }
-}
-
-export default Filters;
