@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Stack from '@mui/material/Stack';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DownloadIcon from '@mui/icons-material/Download';
 
 class ImgUpload extends Component {
 
@@ -69,25 +70,82 @@ class ImgUpload extends Component {
     
   }
 
+
+  downloadImg() {
+    // Download Event
+    let fileName = this.props.fileName;
+    const downloadBtn = document.getElementById("download");
+
+    // Get ext
+    const fileExtension = fileName.slice(-4);
+
+    // Init new filename
+    let newFilename;
+
+    // Check image type
+    if (fileExtension === ".jpg" || fileExtension === ".png") {
+      // new filename
+      newFilename =
+        fileName.substring(0, fileName.length - 4) + "-edited.jpg";
+    }
+
+    // Call download
+    const canvas = document.getElementById("canvas");
+    download(canvas, newFilename);
+
+    // Download
+    function download(canvas, filename) {
+      // Init event
+      let e;
+      // Create link
+      const link = document.createElement("a");
+
+      // Set props
+      link.download = filename;
+      link.href = canvas.toDataURL("image/jpeg", 0.8);
+      // New mouse event
+      e = new MouseEvent("click");
+      // Dispatch event
+      link.dispatchEvent(e);
+    }
+
+  }
+
+
+
+
+
   render() {
     const Input = styled('input')({
       display: 'none',
     });
 
     return (
-      <Button
-        variant="contained"
-        component="label"
-        startIcon={<CloudUploadIcon />}
-      >
+      <Stack spacing={2} direction="row">
+        <Button
+          variant="contained"
+          component="label"
+          startIcon={<CloudUploadIcon />}
+        >
 
-        Upload File
-        <input
-          type="file"
-          id="contained-button-file"
-          hidden
-        />
-      </Button>
+          Upload File
+          <input
+            type="file"
+            id="contained-button-file"
+            hidden
+          />
+        </Button>
+
+        <Button
+          variant="contained"
+          component="label"
+          startIcon={<DownloadIcon />}
+          onClick={() => this.downloadImg()}
+        >
+
+          Download File
+        </Button>
+      </Stack>
 
 
 

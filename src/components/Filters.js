@@ -411,6 +411,19 @@ class Filters extends Component {
 
 
 
+        
+
+        {/* <div className="flex mx-auto w-3/4 justify-evenly">
+          <button
+            className="filter-btn text-white px-4 py-1 bg-green-500  capitalize text outline-none focus:outline-none"
+            type="button"
+            id="download"
+          >
+            Download
+          </button>
+        </div> */}
+
+
 
 
 

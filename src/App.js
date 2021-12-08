@@ -2,6 +2,7 @@ import Nav from "./components/Nav";
 import ImgUpload from "./components/ImgUpload";
 import ReplaceImg from "./components/ReplaceImg";
 import AllPhotos from "./components/AllPhotos";
+import History from "./components/History";
 
 import Filters from "./components/Filters";
 import "./App.css";
@@ -30,7 +31,8 @@ class App extends Component {
         vibrance: 0,
         exposure: 0
       },
-      allFiles: []
+      allFiles: [],
+      history: []
     };
     this.updateImage = this.updateImage.bind(this);
     this.updateImageNewUserUpload = this.updateImageNewUserUpload.bind(this);
@@ -38,7 +40,9 @@ class App extends Component {
     this.updateAllFiles = this.updateAllFiles.bind(this);
     this.addFileToAllFiles = this.addFileToAllFiles.bind(this);
     this.updateFilters = this.updateFilters.bind(this);
+    this.updateFiltersHistoryClick = this.updateFiltersHistoryClick.bind(this);
     this.rerenderShit = this.rerenderShit.bind(this);
+    this.rerenderShitHistoryClick = this.rerenderShitHistoryClick.bind(this);
     this.rerenderShitForLoadFromStorageTwo = this.rerenderShitForLoadFromStorageTwo.bind(this);
     // this.rerenderShitForLoadFromStorage = this.rerenderShitForLoadFromStorage.bind(this);
   }
@@ -64,10 +68,53 @@ class App extends Component {
         saturation: 0,
         vibrance: 0,
         exposure: 0
-      }
-    }, this.writeToDatabase);
+      },
+      history: [
+        {
+          name: "Revert to Original",
+          filters: {
+            brightness: 0,
+            contrast: 0,
+            saturation: 0,
+            vibrance: 0,
+            exposure: 0
+          }
+        }
+      ]
+    }, this.writeToDatabaseNewPhoto);
     console.log("overall state on update image new upload", this.state);
   }
+
+  // FOR NEW USER UPLOAD
+  writeToDatabaseNewPhoto = () => {
+    var photoName = this.state.fileNameNoExtension;
+    var newBrightness = this.state.allFilters.brightness;
+    var newContrast = this.state.allFilters.contrast;
+    var newSaturation = this.state.allFilters.saturation;
+    var newVibrance = this.state.allFilters.vibrance;
+    var newExposure = this.state.allFilters.exposure;
+
+    let photoData = {
+        "history": [
+          {
+            "name": "Revert to Original",
+            "filters": {
+              "brightness": newBrightness,
+              "contrast": newContrast,
+              "saturation": newSaturation,
+              "vibrance": newVibrance,
+              "exposure": newExposure
+            }
+          }
+        ]
+    }
+
+    set(databaseRef(database, 'photos/' + photoName), photoData);
+    console.log("Successfully uploaded photo edit history for new photo: " + photoName)
+  }
+
+
+
 
   // FOR REPLACE IMAGE CLICK
   updateImageOldUpload(img, fileName) {
@@ -84,7 +131,8 @@ class App extends Component {
         saturation: 0,
         vibrance: 0,
         exposure: 0
-      }
+      },
+      history: []
     }, this.readFromDatabase);
     console.log("overall state on update old image click", this.state);
   }
@@ -110,6 +158,52 @@ class App extends Component {
 
     this.setState({allFiles: newAllFiles});
   }
+
+  updateFiltersHistoryClick(newHistory, newAllFilters) {
+    this.setState(
+      {
+        allFilters: newAllFilters,
+        history: newHistory
+      }, this.writeToDatabase);
+
+
+    // var newAllFiles = this.state.allFiles;
+    // const newPath = "images/" + fileToAdd;
+    // newAllFiles.push({name: fileToAdd, fullPath: newPath});
+
+    // this.setState({allFiles: newAllFiles});
+
+    this.rerenderShitHistoryClick(newAllFilters);
+  }
+
+
+
+  rerenderShitHistoryClick(newAllFilters) {
+
+    let img = this.state.img;
+
+    var currentBrightness = newAllFilters.brightness;
+    var currentContrast = newAllFilters.contrast;
+    var currentSaturation = newAllFilters.saturation;
+    var currentVibrance = newAllFilters.vibrance;
+    var currentExposure = newAllFilters.exposure;
+
+    window.Caman("#canvas", img, function () {
+        this.revert();
+        this.brightness(currentBrightness);
+        this.contrast(currentContrast);
+        this.saturation(currentSaturation);
+        this.vibrance(currentVibrance);
+        this.exposure(currentExposure);
+        this.render();
+      });
+    
+  }
+
+
+
+
+
 
   updateFilters(filterName, valueAddOrDecrement) {
     var newBrightness = this.state.allFilters.brightness;
@@ -139,13 +233,41 @@ class App extends Component {
       newExposure = newExposure + valueAddOrDecrement;
     }
 
-    this.setState({allFilters: {
+
+    var editName = `Revert to ${filterName} ${valueAddOrDecrement}`;
+    if (valueAddOrDecrement > 0) {
+      editName = `Revert to ${filterName} +${valueAddOrDecrement}`;
+    }
+
+
+    const newFilterSnapshot = {
       brightness: newBrightness,
       contrast: newContrast,
       saturation: newSaturation,
       vibrance: newVibrance,
       exposure: newExposure
-    }}, this.writeToDatabase);
+    }
+
+    var filterHistory = this.state.history;
+    filterHistory.push(
+      {
+        name: editName,
+        filters: newFilterSnapshot
+      }
+    );
+
+    this.setState(
+      {
+        allFilters: newFilterSnapshot,
+        history: filterHistory
+      }, this.writeToDatabase);
+
+
+    // var newAllFiles = this.state.allFiles;
+    // const newPath = "images/" + fileToAdd;
+    // newAllFiles.push({name: fileToAdd, fullPath: newPath});
+
+    // this.setState({allFiles: newAllFiles});
 
     this.rerenderShit(filterName, valueAddOrDecrement);
   }
@@ -202,16 +324,22 @@ class App extends Component {
     var newVibrance = this.state.allFilters.vibrance;
     var newExposure = this.state.allFilters.exposure;
 
+    var allEditHistory = this.state.history;
+
+    // let photoData = {
+    //     "history": [
+    //       {
+    //         "brightness": newBrightness,
+    //         "contrast": newContrast,
+    //         "saturation": newSaturation,
+    //         "vibrance": newVibrance,
+    //         "exposure": newExposure
+    //       }
+    //     ]
+    // }
+
     let photoData = {
-        "history": [
-          {
-            "brightness": newBrightness,
-            "contrast": newContrast,
-            "saturation": newSaturation,
-            "vibrance": newVibrance,
-            "exposure": newExposure
-          }
-        ]
+        "history": allEditHistory
     }
 
     set(databaseRef(database, 'photos/' + photoName), photoData);
@@ -225,14 +353,18 @@ class App extends Component {
     get(child(dbRef, `photos/${photoName}`)).then((snapshot) => {
       if (snapshot.exists()) {
         const snapshotVal = snapshot.val();
-        const latestFilter = snapshotVal.history.at(-1);
+        const latestFilter = snapshotVal.history.at(-1).filters; // WE NEED TO CHANGED THIS LINE
+        const allHistory = snapshotVal.history;
         // ADD HISTORY CALCULATION LOGIC HERE
         console.log(":::::::::::");
+        console.log(allHistory);
+        console.log(latestFilter);
         console.log(snapshotVal.history.at(-1));
         console.log(":::::::::::");
 
         this.setState({
-          allFilters: latestFilter
+          allFilters: latestFilter,
+          history: allHistory
         }, this.rerenderShitForLoadFromStorage);
 
       } else {
@@ -297,10 +429,36 @@ class App extends Component {
       <div className="App">
         {/* <Nav /> */}
         <div className = "flex flex-col md:flex-row justify-center">
-        <ImgUpload updateImageNewUserUpload = {this.updateImageNewUserUpload} addFileToAllFiles={this.addFileToAllFiles} allFiles={this.state.allFiles}/>
+        <ImgUpload updateImageNewUserUpload = {this.updateImageNewUserUpload} addFileToAllFiles={this.addFileToAllFiles} allFiles={this.state.allFiles} addNewPhotoHistoryOnUserUpload={this.addNewPhotoHistoryOnUserUpload} fileName={this.state.fileName}/>
         {/* <ReplaceImg updateImage = {this.updateImage}/> */}
-        <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} allFilters={this.state.allFilters} updateFilters={this.updateFilters}/>
+        <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} updateFilters={this.updateFilters}/>
         <AllPhotos updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} rerenderShitForLoadFromStorageTwo={this.rerenderShitForLoadFromStorageTwo}/>
+        <History updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} history={this.state.history} updateFiltersHistoryClick={this.updateFiltersHistoryClick}/>
+        </div>
+      </div>
+
+      // <div className="container">
+      //   <div class="one"></div>
+      //   <div class="two"></div>
+      // </div>
+
+      // <div className="container">
+      //   {/* <Nav /> */}
+      //   <div class = "one">
+      //     <ImgUpload updateImageNewUserUpload = {this.updateImageNewUserUpload} addFileToAllFiles={this.addFileToAllFiles} allFiles={this.state.allFiles} addNewPhotoHistoryOnUserUpload={this.addNewPhotoHistoryOnUserUpload} fileName={this.state.fileName}/>
+      //     </div>
+      //     <div class = "one">
+      //     <Filters img={this.state.img} file={this.state.file} fileName={this.state.fileName} updateFilters={this.updateFilters}/>
+      //     </div>
+      //     <AllPhotos updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} rerenderShitForLoadFromStorageTwo={this.rerenderShitForLoadFromStorageTwo}/>
+      //     <History updateAllFiles={this.updateAllFiles} allFiles={this.state.allFiles} updateImageOldUpload={this.updateImageOldUpload} history={this.state.history} updateFiltersHistoryClick={this.updateFiltersHistoryClick}/>
+      //   </div>
+      // </div>
+    );
+  }
+}
+
+export default App;
 
 
 
@@ -322,10 +480,3 @@ class App extends Component {
           Write to RTDB (Sample User)
         </button> */}
         
-        </div>
-      </div>
-    );
-  }
-}
-
-export default App;
